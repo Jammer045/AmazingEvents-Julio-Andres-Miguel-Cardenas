@@ -195,59 +195,15 @@ const data = {
     ],
   };
   
-  document.addEventListener('DOMContentLoaded', function () {
-    const params = new URLSearchParams(window.location.search);
-    const eventId = params.get('id');
   
-    if (eventId) {
-      const event = data.events.find(e => e._id === eventId);
-      if (event) {
-        displayEventDetails(event);
-      } else {
-        displayErrorMessage("Event not found");
-      }
-    } else {
-      displayErrorMessage("No event ID provided");
-    }
-  });
-  
-  function displayEventDetails(event) {
-    const detailsContainer = document.getElementById('eventDetails');
-    detailsContainer.innerHTML = `
-          <div class="ContainerDetails">
-              <div class="row">
-                  <div class="col-12">
-                      <div class="card shadow" style="max-width: 1000px; margin: auto;">
-                          <div class="row g-0">
-                              <div class="col-md-6 p-0">
-                                  <img src="${event.image}"
-                                      class="img-fluid w-100 h-100"
-                                      style="object-fit: cover; max-height: 404px;" alt="${event.name}">
-                              </div>
-                              <div class="col-md-6">
-                                  <div class="card-body h-100 d-flex flex-column">
-                                      <h2 class="card-title mb-4">${event.name}</h2>
-                                      <ul class="list-group list-group-flush flex-grow-1">
-                                          <li class="list-group-item"><strong>Date:</strong> ${event.date}</li>
-                                          <li class="list-group-item"><strong>Description:</strong> ${event.description}</li>
-                                          <li class="list-group-item"><strong>Category:</strong> ${event.category}</li>
-                                          <li class="list-group-item"><strong>Place:</strong> ${event.place}</li>
-                                          <li class="list-group-item"><strong>Capacity:</strong> ${event.capacity}</li>
-                                          ${event.assistance ? `<li class="list-group-item"><strong>Assistance:</strong> ${event.assistance}</li>` : ''}
-                                          ${event.estimate ? `<li class="list-group-item"><strong>Estimate:</strong> ${event.estimate}</li>` : ''}
-                                          <li class="list-group-item"><strong>Price:</strong> $${event.price}</li>
-                                      </ul>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      `;
-  }
-  
-  function displayErrorMessage(message) {
-    const detailsContainer = document.getElementById('eventDetails');
-    detailsContainer.innerHTML = `<p class="text-center text-danger">${message}</p>`;
-  }
+let url = window.location.search
+let urlObjeto = new URLSearchParams(url)
+
+let evento = data.events.find(e => e._id == urlObjeto.get("id"))
+console.log(evento)
+let contenedor = document.getElementById("eventDetails")
+
+let crearTarjeta = document.createElement("div");
+crearTarjeta.className = "card col-8 m-3";
+crearTarjeta.innerHTML = contenedor
+contenedor.appendChild(crearTarjeta)
