@@ -231,19 +231,19 @@ for (let i = 0; i < data.events.length; i++)
       checkbox.innerHTML=`
             <input id="form-check-input" type="checkbox" value="${category}" id="${category}">
             <label id="check-label" for="${category}">${category}</label>`;
-
+0
       contenedorCheckboxes.appendChild(checkbox);
     })
 
       function filterCards() {
-        let cards = document.querySelectorAll('input[type="search"]').value.toLowerCase();
         let categoriasSeleccionadas= Array.from(document.querySelectorAll('.form-check-input:checked')).map(checkbox => checkbox.value);
+        let cards = document.querySelectorAll('input[type="search"]').value.toLowerCase();
         let eventosFiltrados= data.events.filter(event => {
           let matchesSearch = event.name.toLowerCase().includes(cards) || event.description.toLowerCase().includes(cards);
           let matchesCategory = categoriasSeleccionadas.length === 0 || categoriasSeleccionadas.includes(event.category);
           return matchesSearch && matchesCategory;
         });
-        filterCards(eventosFiltrados);
+        innputEvents(eventosFiltrados);
         };
       function innputEvents (events){
         Tarjetas.innerHTML = '';if (events.length === 0) {
@@ -257,7 +257,7 @@ for (let i = 0; i < data.events.length; i++)
         tarjeta.id= "tarjeta"
       tarjeta.innerHTML= `
   <div class="cards d-flex flex-wrap gap-3">
-  <div class="card w-sm-50 w-lg-30" style="width: 18rem;">
+  <div class="card w-sm-50  w-lg-30" style="width: 18rem;">
     <img src="${event.image}" class="card-img-top" alt="..."/>
     <div class="card-body">
       <h5 class="card-title">${event.name}</h5>
@@ -278,16 +278,11 @@ document.addEventListener('DOMContentLoaded', function () {
 generarCheckboxes();
 innputEvents(data.events);
 
-let searchInput = document.querySelector('input[type="search"]');
+let searchInput = document.querySelector("form-control me-2");
 let searchButton = document.querySelector("btn-outline-success");
 
 searchButton.addEventListener('click', filterCards);
-
-searchInput.addEventListener('keypress', function (e) {
-  if (e.key === 'Enter') {
-    filterEvents();
-  }
-});
+searchInput.addEventListener('keypress', filterCards);
 
 checkboxContainer.addEventListener('change', filterEvents);
 });}

@@ -239,25 +239,23 @@ for (let i = 0; i < data.events.length; i++){
 }
 
     function filtrarEventosP(){
-      const searchTerm = document.querySelector('input[type="search"]').value.toLowerCase();
-      const categoriasSeleccionadas = Array.from(document.querySelectorAll('.form-check-input:checked')).map(checkbox => checkbox.value);
-    
-      const filteredEvents = data.events.filter(event => {
-        const isPastEvent = new Date(event.date) < new Date(data.currentDate);
-        const matchesSearch = event.name.toLowerCase().includes(searchTerm) || event.description.toLowerCase().includes(searchTerm);
-        const matchesCategory = categoriasSeleccionadas.length === 0 || categoriasSeleccionadas.includes(event.category);
+      let searchTerm = document.querySelector('input[type="search"]').value.toLowerCase();
+      let categoriasSeleccionadas = Array.from(document.querySelectorAll('.form-check-input:checked')).map(checkbox => checkbox.value);
+      let filteredEvents = data.events.filter(event => {
+        let isPastEvent = new Date(event.date) < new Date(data.currentDate);
+        let matchesSearch = event.name.toLowerCase().includes(searchTerm) || event.description.toLowerCase().includes(searchTerm);
+        let matchesCategory = categoriasSeleccionadas.length === 0 || categoriasSeleccionadas.includes(event.category);
         return isPastEvent && matchesSearch && matchesCategory;
       });
     
       displayEvents(filteredEvents);}
     
       function displayEvents(events) {
-        contenedor.innerHTML = '';
+        card.innerHTML = '';
       
         if (events.length === 0) {
           card.innerHTML = '<p id="text-center">La categoria seleccionada no existe, favor de verificar.</p>';
-          return;
-        }
+        } 
       
         const vincular = document.createElement('div');
         vincular.id = 'cardp';
@@ -274,7 +272,7 @@ for (let i = 0; i < data.events.length; i++){
       <p class="card-text">${event.description}</p>
       <div class="d-flex justify-content-between">
         <p>$ ${event.price} .00</p>
-        <a id="ancorDetails" href="./Details.html" class="btn btn-primary">Details</a>
+        <a id="ancorDetails" href="Details.html?id=${event._id}" class="btn btn-primary">Details</a>
       </div>
     </div>
   </div>

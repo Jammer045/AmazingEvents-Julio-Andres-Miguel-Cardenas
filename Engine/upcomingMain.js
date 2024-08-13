@@ -213,7 +213,7 @@ for (let i = 0; i < data.events.length; i++){
         <p class="card-text">${data.events[i].description}</p>
         <div class="d-flex justify-content-between">
           <p>$ ${data.events[i].price} .00</p>
-          <a href="./Details.html" class="btn btn-primary">Details</a>
+          <a href="Details.html" class="btn btn-primary">Details</a>
         </div>
       </div>
     </div>
@@ -222,8 +222,8 @@ for (let i = 0; i < data.events.length; i++){
     card.appendChild(contenedorFestival)}
   
     let contenedorCheckboxes = document.getElementById('contenedorCheckboxesP');
-    const searchInput = document.querySelector('.input-group input[type="search"]');
-    const searchButton = document.querySelector('.input-group button');
+    let searchInput = document.querySelector('.input-group input[type="search"]');
+    let searchButton = document.querySelector('.input-group button');
 
     function createCategoryCheckboxes() {
       let nombres = new Set(data.events.map(event => event.name));
@@ -240,13 +240,12 @@ for (let i = 0; i < data.events.length; i++){
       });
     }
     function eventosFuturos() {
-      const searchTerm = searchInput.value.toLowerCase();
-      const categoriasSeleccionadas = Array.from(document.querySelectorAll('.form-check-input:checked')).map(checkbox => checkbox.value);
-    
-      const eventosFiltrados = data.events.filter(event => {
-        const eventDate = new Date(event.date) >= new Date(data.currentDate);
-        const matchesSearch = event.name.toLowerCase().includes(searchTerm) || event.description.toLowerCase().includes(searchTerm);
-        const matchesCategory = categoriasSeleccionadas.length === 0 || categoriasSeleccionadas.includes(event.category);
+      let searchTerm = searchInput.value.toLowerCase();
+      let categoriasSeleccionadas = Array.from(document.querySelectorAll('.form-check-input:checked')).map(checkbox => checkbox.value);
+      let eventosFiltrados = data.events.filter(event => {
+        let eventDate = new Date(event.date) >= new Date(data.currentDate);
+        let matchesSearch = event.name.toLowerCase().includes(searchTerm) || event.description.toLowerCase().includes(searchTerm);
+        let matchesCategory = categoriasSeleccionadas.length === 0 || categoriasSeleccionadas.includes(event.category);
         return eventDate && matchesSearch && matchesCategory;
       });
     
@@ -260,7 +259,7 @@ for (let i = 0; i < data.events.length; i++){
         return;
       }
     
-      const vincular = document.createElement('div');
+      let vincular = document.createElement('div');
       vincular.className = 'carduC';
     
       events.forEach(event => {
@@ -304,7 +303,7 @@ for (let i = 0; i < data.events.length; i++){
               }
             });
         
-            const form = searchInput.closest('form');
+            let form = searchInput.closest('form');
             if (form) {
               form.addEventListener('submit', handleSearch);
             }
