@@ -96,41 +96,25 @@
     </div>
 
     <div class="radios d-sm-flex justify-content-between">
-      <div class="checks d-md-flex">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-          <label class="form-check-label" for="flexCheckChecked">
-            Food
-          </label>
-        </div>
-
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="_flexCheckChecked" checked>
-          <label class="form-check-label" for="flexCheckChecked">
-            Art Exhibition
-          </label>
-        </div>
-
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="f-lexCheckChecked" checked>
-          <label class="form-check-label" for="flexCheckChecked">
-            Maratton
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="flex-CheckChecked" checked>
-          <label class="form-check-label" for="flexCheckChecked">
-            Library
+      <div id="contenedorCheckboxesP" class="checks d-md-flex">
+        <div id="checkboxP" class="form-check">
+          <input class="form-control me-2" type="checkbox" value="${category}" id="${category}">
+          <label class="form-check-label" for="flexCheckChecked" id="labelc">
+             
           </label>
         </div>
       </div>
+
+      </div>
       <form class="d-flex p-4" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <input id="textoPast" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button id="botonPast" class="btn btn-outline-success" type="submit">Search</button>
       </form>
+      <p id="text-center"></p>
     </div>
 
     <div id="cardp" class="cards d-flex flex-wrap gap-3"></div>
+    <div id="cardli" class="cards d-flex flex-wrap gap-3"></div>
 
   </main>
   <footer class="bg-primary p-4"> 

@@ -118,51 +118,25 @@
       <p style="font-weight: 700;">What activity are you interested in:</p>
     </div>
 
+    <div class="d-flex justify-content-end"><form class="d-flex p-4" role="search">
+      <input id="textoIndex" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      
+    </form><button id="botonIndex" class="btn-outline-success" type="submit">Search</button></div>
     <div class="radios d-sm-flex justify-content-between">
-      <div class="checks d-md-flex">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-          <label class="form-check-label" for="flexCheckChecked">
-            Food
+      
+      <div id="contenedorCheckboxes" class="checks d-md-flex">
+        <div id="checkbox" class="form-check">
+          <input id="form-check-input" type="checkbox" value="${category}" id="${category}">
+          <label id="check-label" for="${category}"></label>
+          <p id="Alert-text"></p>
+             
           </label>
         </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="flexCheck-Checked" checked>
-          <label class="form-check-label" for="flexCheckChecked">
-            Art Exhibition
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="_flexCheckChecked" checked>
-          <label class="form-check-label" for="flexCheckChecked">
-            Costume Party
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="flex-CheckChecked" checked>
-          <label class="form-check-label" for="flexCheckChecked">
-            Concert Music
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="f-lexCheckChecked" checked>
-          <label class="form-check-label" for="flexCheckChecked">
-            Maratton
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="flexC-heckChecked" checked>
-          <label class="form-check-label" for="flexCheckChecked">
-            Cinema
-          </label>
-        </div>
+        
       </div>
-      <form class="d-flex p-4" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
     </div>
-
+    
+    <div id="tarjeta" class="cards d-flex flex-wrap gap-3"></div>
     <div id="cardh" class="cards d-flex flex-wrap gap-3"></div>
       
   </main>

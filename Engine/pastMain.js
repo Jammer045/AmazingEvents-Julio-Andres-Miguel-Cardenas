@@ -202,9 +202,8 @@ for (let i = 0; i < data.events.length; i++){
     let currentDate = data.currentDate
     if (currentDate>data.events[i].date) {
         
-    
     let contenedorFestival = document.createElement ("div")
-    contenedorFestival.id="cardh"
+    contenedorFestival.id="cardp"
     contenedorFestival.innerHTML=`
     <div class="cards d-flex flex-wrap gap-3">
     <div class="card w-sm-50 w-lg-30" style="width: 18rem;">
@@ -220,4 +219,85 @@ for (let i = 0; i < data.events.length; i++){
     </div>
     </div>`
     console.log(contenedorFestival);
-    card.appendChild(contenedorFestival)}}
+    card.appendChild(contenedorFestival)
+
+    let contenedorCheckboxes = document.getElementById('contenedorCheckboxesP');
+    function generarCheckboxes() {
+      let categories = new Set(data.events.map(event => event.name));
+  
+      contenedorCheckboxes.innerHTML= ''; 
+
+      categories.forEach(category => {
+        let checkbox = document.createElement('div');
+        checkbox.className = 'form-check';
+    checkbox.innerHTML = `
+            <input class="form-control me-2" type="checkbox" value="${category}" id="${category}">
+            <label class="form-check-label" for="${category}">${category}</label>
+        `;
+        contenedorCheckboxes.appendChild(checkbox);
+  });
+}
+
+    function filtrarEventosP(){
+      const searchTerm = document.querySelector('input[type="search"]').value.toLowerCase();
+      const categoriasSeleccionadas = Array.from(document.querySelectorAll('.form-check-input:checked')).map(checkbox => checkbox.value);
+    
+      const filteredEvents = data.events.filter(event => {
+        const isPastEvent = new Date(event.date) < new Date(data.currentDate);
+        const matchesSearch = event.name.toLowerCase().includes(searchTerm) || event.description.toLowerCase().includes(searchTerm);
+        const matchesCategory = categoriasSeleccionadas.length === 0 || categoriasSeleccionadas.includes(event.category);
+        return isPastEvent && matchesSearch && matchesCategory;
+      });
+    
+      displayEvents(filteredEvents);}
+    
+      function displayEvents(events) {
+        contenedor.innerHTML = '';
+      
+        if (events.length === 0) {
+          card.innerHTML = '<p id="text-center">La categoria seleccionada no existe, favor de verificar.</p>';
+          return;
+        }
+      
+        const vincular = document.createElement('div');
+        vincular.id = 'cardp';
+      
+        events.forEach(event => {
+          let tarjeta = document.createElement("div");
+          tarjeta.id = "cardli";
+          tarjeta.innerHTML = `
+                 <div class="cards d-flex flex-wrap gap-3">
+  <div class="card w-sm-50 w-lg-30" style="width: 18rem;">
+    <img src="${event.image}" class="card-img-top" alt="..."/>
+    <div class="card-body">
+      <h5 class="card-title">${event.name}</h5>
+      <p class="card-text">${event.description}</p>
+      <div class="d-flex justify-content-between">
+        <p>$ ${event.price} .00</p>
+        <a id="ancorDetails" href="./Details.html" class="btn btn-primary">Details</a>
+      </div>
+    </div>
+  </div>
+  </div>
+            `;
+          vincular.appendChild(tarjeta);
+        });
+        card.appendChild(vincular);
+      }
+      document.addEventListener('DOMContentLoaded', function () {
+        generarCheckboxes();
+        filtrarEventosP();
+      
+        document.getElementById('botonPast').addEventListener('click', filtrarEventosP);
+      
+        document.querySelector('input[type="search"]').addEventListener('keypress', function (e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            filtrarEventosP();
+          }
+        });
+      
+        contenedorCheckboxes.addEventListener('change', filtrarEventosP);
+      });
+    }}
+  
