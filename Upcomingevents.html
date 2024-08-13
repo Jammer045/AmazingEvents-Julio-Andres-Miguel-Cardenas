@@ -9,8 +9,6 @@
     type="image/x-icon">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-
 </head>
 
 <body>
@@ -47,7 +45,6 @@
       </nav>
     </div>
 
-
   </header>
   <main class="bg-info-subtle">
     <div class="d-flex justify-content-center bg-warning">
@@ -59,7 +56,6 @@
           aria-current="true" aria-label="Slide 1"></button>
         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
           aria-label="Slide 2"></button>
-
 
       </div>
       <div class="carousel-inner">
@@ -99,77 +95,24 @@
       <p style="font-weight: 700;">What activity are you interested in:</p>
     </div>
 
-    <div class="radios d-sm-flex justify-content-between">
+    <div id="contenedorCheckboxesP" class="radios d-sm-flex justify-content-between">
       <div class="checks d-md-flex">
 
         <div class="form-check">
           <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-          <label class="form-check-label" for="flexCheckChecked">
-            Costume Party
-          </label>
+          <label class="form-check-label" for="flexCheckChecked"></label>
         </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="_flexCheckChecked" checked>
-          <label class="form-check-label" for="flexCheckChecked">
-            Concert Music
-          </label>
-        </div>
-
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="f-lexCheckChecked" checked>
-          <label class="form-check-label" for="flexCheckChecked">
-            Cinema
-          </label>
-        </div>
+        
       </div>
       <form class="d-flex p-4" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
+      <p class="text-center"></p>
     </div>
 
-    <div class="cards d-flex flex-wrap gap-3">
-
-
-      <div class="card" style="width: 18rem;">
-        <img src="./Recursos_Amazing_Events_Task_1/Recursos_Amazing_Events_Task_1/costume_party.jpg"
-          class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Halloween Night</h5>
-          <p class="card-text">Come in your scariest costume character to win amazing prizes.</p>
-          <div class="d-flex justify-content-between">
-            <p>Price: $12.00</p>
-            <a href="./Details.html" class="btn btn-primary">Details</a>
-          </div>
-        </div>
-      </div>
-      <div class="card" style="width: 18rem;">
-        <img src="./Recursos_Amazing_Events_Task_1/Recursos_Amazing_Events_Task_1/music_concert.jpg"
-          class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Metallica in concert</h5>
-          <p class="card-text">The only concert of the most emblematic band in the world</p>
-          <div class="d-flex justify-content-between">
-            <p>Price: $150.00</p>
-            <a href="./Details.html" class="btn btn-primary">Details</a>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="card" style="width: 18rem;">
-        <img src="./Recursos_Amazing_Events_Task_1/Recursos_Amazing_Events_Task_1/cinema.jpg" class="card-img-top"
-          alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Avengers</h5>
-          <p class="card-text">Marvel's Avengers 3d premiere the start of an epic saga with your best superheroes</p>
-          <div class="d-flex justify-content-between">
-            <p>Price: $250.00</p>
-            <a href="./Details.html" class="btn btn-primary">Details</a>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div id="cardu" class="cards d-flex flex-wrap gap-3"></div>
+    <div id="carduC" class="cards d-flex flex-wrap gap-3"></div>
 
   </main>
   <footer class="bg-primary p-4"> 
@@ -185,7 +128,7 @@
       <p style="font-weight: 700;">©Amazing Events</p>
     </div>
   </footer>
-
+  <script type="module" src="./Engine/upcomingMain.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
