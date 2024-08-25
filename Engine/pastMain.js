@@ -239,7 +239,7 @@ for (let i = 0; i < data.events.length; i++){
 }
 
     function filtrarEventosP(){
-      let searchTerm = document.querySelector('input[type="search"]').value.toLowerCase();
+      let searchTerm = document.querySelectorAll('.textoPast[type="search"]').value.toLowerCase();
       let categoriasSeleccionadas = Array.from(document.querySelectorAll('.form-check-input:checked')).map(checkbox => checkbox.value);
       let filteredEvents = data.events.filter(event => {
         let isPastEvent = new Date(event.date) < new Date(data.currentDate);

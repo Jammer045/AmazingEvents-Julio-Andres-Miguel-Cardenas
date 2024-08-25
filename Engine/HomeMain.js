@@ -195,94 +195,104 @@ const data = {
     ],
   };
 
-let card = document.getElementById ("cardh")
-for (let i = 0; i < data.events.length; i++)
-{
-  let contenedorFestival = document.createElement ("div")
-  contenedorFestival.id="cardh"
-  contenedorFestival.innerHTML=`
-  <div class="cards d-flex flex-wrap gap-3">
-  <div class="card w-sm-50 w-lg-30" style="width: 18rem;">
-    <img src="${data.events[i].image}" class="card-img-top" alt="..."/>
-    <div class="card-body">
-      <h5 class="card-title">${data.events[i].name}</h5>
-      <p class="card-text">${data.events[i].description}</p>
-      <div class="d-flex justify-content-between">
-        <p>$ ${data.events[i].price} .00</p>
-        <a href="./Details.html" class="btn btn-primary">Details</a>
+  let card = document.getElementById ("cardh")
+
+  for (let i = 0; i < data.events.length; i++){
+      
+       {
+          
+      let contenedorFestival = document.createElement ("div")
+      contenedorFestival.id="cardh"
+      contenedorFestival.innerHTML=`
+      <div class="cards d-flex flex-wrap gap-3">
+      <div class="card w-sm-50 w-lg-30" style="width: 18rem;">
+        <img src="${data.events[i].image}" class="card-img-top" alt="..."/>
+        <div class="card-body">
+          <h5 class="card-title">${data.events[i].name}</h5>
+          <p class="card-text">${data.events[i].description}</p>
+          <div class="d-flex justify-content-between">
+            <p>$ ${data.events[i].price} .00</p>
+            <a href="./Details.html?id=${data.events[i]._id}" class="btn btn-primary">Details</a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-  </div>`
-  console.log(contenedorFestival);
-  card.appendChild(contenedorFestival)
+      </div>`
+      
+      card.appendChild(contenedorFestival)
+      
+       }}
 
-    let Tarjetas = document.getElementById('cardh');
-    let checkboxContainer = document.getElementById("contenedorCheckboxes");
-    
-    function generarCheckboxes (){}
-    let categories= new Set (data.events.map(event => event.category))
-    checkboxContainer.innerHTML = '';
-    categories.forEach(category => {
-      let checkbox = document.createElement('div');
-      checkbox.type = 'checkbox';
-      checkbox.value = category;
-      checkbox.id = "form-check-input";
-      checkbox.innerHTML=`
-            <input id="form-check-input" type="checkbox" value="${category}" id="${category}">
-            <label id="check-label" for="${category}">${category}</label>`;
-0
-      contenedorCheckboxes.appendChild(checkbox);
-    })
 
-      function filterCards() {
-        let categoriasSeleccionadas= Array.from(document.querySelectorAll('.form-check-input:checked')).map(checkbox => checkbox.value);
-        let cards = document.querySelectorAll('input[type="search"]').value.toLowerCase();
-        let eventosFiltrados= data.events.filter(event => {
-          let matchesSearch = event.name.toLowerCase().includes(cards) || event.description.toLowerCase().includes(cards);
-          let matchesCategory = categoriasSeleccionadas.length === 0 || categoriasSeleccionadas.includes(event.category);
-          return matchesSearch && matchesCategory;
-        });
-        innputEvents(eventosFiltrados);
-        };
-      function innputEvents (events){
-        Tarjetas.innerHTML = '';if (events.length === 0) {
-          Tarjetas.innerHTML = '<p id="Alert-text">La categoria seleccionada no existe, favor de verificar.</p>';
-        return;}
-
-        let vincular= document.createElement("div")
-        vincular.id="cardh"
-        events.forEach(event => {
-        let tarjeta= document.createElement("div")
-        tarjeta.id= "tarjeta"
-      tarjeta.innerHTML= `
-  <div class="cards d-flex flex-wrap gap-3">
-  <div class="card w-sm-50  w-lg-30" style="width: 18rem;">
-    <img src="${event.image}" class="card-img-top" alt="..."/>
-    <div class="card-body">
-      <h5 class="card-title">${event.name}</h5>
-      <p class="card-text">${event.description}</p>
-      <div class="d-flex justify-content-between">
-        <p>$ ${event.price} .00</p>
-        <a id="ancorDetails" href="./Details.html" class="btn btn-primary">Details</a>
-      </div>
-    </div>
-  </div>
-  </div>`;
-  vincular.appendChild(tarjeta);
+const categorias = [...new Set(data.events.map(event => event.category))];
+const contenedorCheckboxes = document.getElementById("contenedorCheckboxes");
+categorias.forEach(categoria => {
+  const checkbox = document.createElement("div");
+  checkbox.className = "form-check";
+  checkbox.innerHTML = `
+    <input class="form-check-input" type="checkbox" value="${categoria}" id="${categoria}">
+    <label class="form-check-label" for="${categoria}">${categoria}</label>
+  `;
+  contenedorCheckboxes.appendChild(checkbox);
 });
 
-Tarjetas.appendChild(vincular);}
+contenedorCheckboxes.addEventListener("change", e => {
+  const categoriaSeleccionada = e.target.value;
+  const eventosFiltrados = data.events.filter(event => event.category === categoriaSeleccionada);
+  const contenedorEventos = document.getElementById("cardh");
+  contenedorEventos.innerHTML = "";
+  eventosFiltrados.forEach(evento => {
+    const tarjeta = document.createElement("div");
+    tarjeta.innerHTML = `
+      <div class="cards d-flex flex-wrap gap-3">
+        <div class="card w-sm-50 w-lg-30" style="width: 18rem;">
+          <img src="${evento.image}" class="card-img-top" alt="..."/>
+          <div class="card-body">
+            <h5 class="card-title">${evento.name}</h5>
+            <p class="card-text">${evento.description}</p>
+            <div class="d-flex justify-content-between">
+              <p>$ ${evento.price} .00</p>
+              <a href="./Details.html?id=${evento._id}" class="btn btn-primary">Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    contenedorEventos.appendChild(tarjeta);
+    
+  });
+});
+document.addEventListener("click", e => {
+  if (e.target.classList.contains("details-btn")) {
+    const id = e.target.getAttribute("data-id");
+    window.location.href = `./Details.html?id=${id}`;
+  }
+});
 
-document.addEventListener('DOMContentLoaded', function () {
-generarCheckboxes();
-innputEvents(data.events);
+const inputTexto = document.getElementById('textoIndex');
+const botonIndex = document.getElementById('botonIndex');
 
-let searchInput = document.querySelector("form-control me-2");
-let searchButton = document.querySelector("btn-outline-success");
+botonIndex.addEventListener('click', () => {
+  const textoMinusculas = inputTexto.value.toLowerCase();
+  const tarjetas = document.querySelectorAll('.card');
 
-searchButton.addEventListener('click', filterCards);
-searchInput.addEventListener('keypress', filterCards);
+  tarjetas.forEach((tarjeta) => {
+    const nombreTarjeta = tarjeta.querySelector('.card-title').textContent.toLowerCase();
+    if (nombreTarjeta.includes(textoMinusculas)) {
+      tarjeta.style.display = 'block';
+    } else {
+      tarjeta.style.display = 'none';
+    }
+  });
+});
 
-checkboxContainer.addEventListener('change', filterEvents);
-});}
+const textoIndex = document.getElementById('textoIndex');
+const nombres = ['Collectivities Party', 'Korean style', 'Jurassic Park', 'Parisian Museum', 'Comicon', 'Halloween Night', 'Metallica in concert', 'Electronic Fest', '10K for life', '15K NY', 'Schools book fair', 'Just for your kitchen', 'Batman', 'Avengers'];
+
+textoIndex.addEventListener('input', function() {
+  const textoIngresado = textoIndex.value.trim().toLowerCase();
+  const coincide = nombres.some(nombre => nombre.toLowerCase().includes(textoIngresado));
+
+  if (!coincide) {
+    alert('La información que proporcionaste es incorrecta, favor de verificar');
+  }
+});
