@@ -213,105 +213,98 @@ for (let i = 0; i < data.events.length; i++){
         <p class="card-text">${data.events[i].description}</p>
         <div class="d-flex justify-content-between">
           <p>$ ${data.events[i].price} .00</p>
-          <a href="Details.html" class="btn btn-primary">Details</a>
+          <a href="Details.html?id=${data.events[i]._id}" class="btn btn-primary">Details</a>
         </div>
       </div>
     </div>
     </div>`
     console.log(contenedorFestival);
-    card.appendChild(contenedorFestival)}
+    card.appendChild(contenedorFestival)
+  }}
+
+   
+
+  let currentDate = data.currentDate;
+  let contenedorCheckboxes = document.getElementById("contenedorCheckboxesP");
+  let contenedorTarjetas = document.getElementById("cardu");
   
-    let contenedorCheckboxes = document.getElementById('contenedorCheckboxesP');
-    let searchInput = document.querySelector('.input-group input[type="search"]');
-    let searchButton = document.querySelector('.input-group button');
-
-    function createCategoryCheckboxes() {
-      let nombres = new Set(data.events.map(event => event.name));
-      contenedorCheckboxes.innerHTML = '';
-    
-      nombres.forEach(category => {
-        const checkbox = document.createElement('div');
-        checkbox.className = 'form-check';
-        checkbox.innerHTML = `
-          <input class="form-check-input" type="checkbox" value="${category}" id="${category}">
-          <label class="form-check-label" for="${category}">${category}</label>
-        `;
-        contenedorCheckboxes.appendChild(checkbox);
-      });
-    }
-    function eventosFuturos() {
-      let searchTerm = searchInput.value.toLowerCase();
-      let categoriasSeleccionadas = Array.from(document.querySelectorAll('.form-check-input:checked')).map(checkbox => checkbox.value);
-      let eventosFiltrados = data.events.filter(event => {
-        let eventDate = new Date(event.date) >= new Date(data.currentDate);
-        let matchesSearch = event.name.toLowerCase().includes(searchTerm) || event.description.toLowerCase().includes(searchTerm);
-        let matchesCategory = categoriasSeleccionadas.length === 0 || categoriasSeleccionadas.includes(event.category);
-        return eventDate && matchesSearch && matchesCategory;
-      });
-    
-      displayEvents(eventosFiltrados);
-    }
-    function displayEvents(events) {
-      contenedor.innerHTML = '';
-    
-      if (events.length === 0) {
-        contenedor.innerHTML = '<p class="text-center">La categoria seleccionada no existe, favor de verificar.</p>';
-        return;
-      }
-    
-      let vincular = document.createElement('div');
-      vincular.className = 'carduC';
-    
-      events.forEach(event => {
-        let col = document.createElement("div");
-        col.className = "col";
-        col.innerHTML =`
-                 <div class="cards d-flex flex-wrap gap-3">
-  <div class="card w-sm-50 w-lg-30" style="width: 18rem;">
-    <img src="${event.image}" class="card-img-top" alt="..."/>
-    <div class="card-body">
-      <h5 class="card-title">${event.name}</h5>
-      <p class="card-text">${event.description}</p>
-      <div class="d-flex justify-content-between">
-        <p>$ ${event.price} .00</p>
-        <a id="ancorDetails" href="./Details.html" class="btn btn-primary">Details</a>
-      </div>
-    </div>
-  </div>
-  </div>
-            `;         
-          vincular.appendChild(tarjeta);
-        });
-        card.appendChild(vincular);}
-        function handleSearch(event) {
-          if (event.type === 'submit') {
-            event.preventDefault();
-          }
-          eventosFuturos();
+  data.events.forEach((evento) => {
+    if (currentDate < evento.date) {
+      const checkbox = document.createElement("div");
+      checkbox.className = "form-check";
+      checkbox.innerHTML = `
+        <input class="form-check-input" type="checkbox" value="${evento._id}" id="checkbox-${evento._id}">
+        <label class="form-check-label" for="checkbox-${evento._id}">${evento.name}</label>
+      `;
+      contenedorCheckboxes.appendChild(checkbox);
+  
+      const checkboxInput = checkbox.querySelector("input");
+      checkboxInput.addEventListener("change", () => {
+        if (checkboxInput.checked) {
+          pintarTarjeta(evento);
+        } else {
+          eliminarTarjeta(evento._id);
         }
-        
-        function init() {
-          try {
-            createCategoryCheckboxes();
-            eventosFuturos();
-        
-            searchButton.addEventListener('click', handleSearch);
-        
-            searchInput.addEventListener('keypress', function (event) {
-              if (event.key === 'Enter') {
-                handleSearch(event);
-              }
-            });
-        
-            let form = searchInput.closest('form');
-            if (form) {
-              form.addEventListener('submit', handleSearch);
-            }
-        
-            checkboxContainer.addEventListener('change', eventosFuturos);
-          } catch (error) {
-            console.error("Error durante la inicialización:", error);
+      });
+    }
+  });
+  
+  function pintarTarjeta(evento) {
+    const tarjeta = document.getElementById("cardu");
+    tarjeta.className = "tarjeta";
+    tarjeta.innerHTML = `
+      <div class="cards d-flex flex-wrap gap-3">
+      <div class="card w-sm-50 w-lg-30" style="width: 18rem;">
+        <img src="${evento.image}" class="card-img-top" alt="..."/>
+        <div class="card-body">
+          <h5 class="card-title">${evento.name}</h5>
+          <p class="card-text">${evento.description}</p>
+          <div class="d-flex justify-content-between">
+            <p>$ ${evento.price} .00</p>
+            <a href="./Details.html?id=${evento._id}" class="btn btn-primary">Details</a>
+          </div>
+        </div>
+      </div>
+      </div>`;
+    contenedorTarjetas.appendChild(tarjeta);
   }
-}
-
-document.addEventListener('DOMContentLoaded', init);}
+  
+  function eliminarTarjeta(id) {
+    const tarjetas = contenedorTarjetas.children;
+    for (let i = 0; i < tarjetas.length; i++) {
+      if (tarjetas[i].dataset.id === id) {
+        contenedorTarjetas.removeChild(tarjetas[i]);
+        break;
+      }
+    }
+  }
+  
+  const inputTexto = document.getElementById('textoPast');
+  const botonIndex = document.getElementById('botonPast');
+  
+  botonIndex.addEventListener('click', () => {
+    const textoMinusculas = inputTexto.value.toLowerCase();
+    const tarjetas = document.querySelectorAll('.card');
+  
+    tarjetas.forEach((tarjeta) => {
+      const nombreTarjeta = tarjeta.querySelector('.card-title').textContent.toLowerCase();
+      if (nombreTarjeta.includes(textoMinusculas)) {
+        tarjeta.style.display = 'block';
+      } else {
+        tarjeta.style.display = 'none';
+      }
+    });
+    localStorage.setItem('filtro', inputTexto.value);
+  });
+  
+  const textoIndex = document.getElementById('textoPast');
+  const nombres = ['Collectivities Party', 'Korean style', 'Jurassic Park', 'Parisian Museum', 'Comicon', 'Halloween Night', 'Metallica in concert', 'Electronic Fest', '10K for life', '15K NY', 'Schools book fair', 'Just for your kitchen', 'Batman', 'Avengers'];
+  
+  textoIndex.addEventListener('input', function() {
+    const textoIngresado = textoIndex.value.trim().toLowerCase();
+    const coincide = nombres.some(nombre => nombre.toLowerCase().includes(textoIngresado));
+  
+    if (!coincide) {
+      alert('La información que proporcionaste es incorrecta, favor de verificar');
+    }
+  });
