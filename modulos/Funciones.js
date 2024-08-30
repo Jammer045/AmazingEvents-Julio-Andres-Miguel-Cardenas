@@ -1,6 +1,6 @@
-const obtenerData = async () => {
+ export const obtenerData = async () => {
   try {
-    const respuesta = await fetch('https://mindhub-xj03.onrender.com/api/amazing');
+    const respuesta = await fetch('https://aulamindhub.github.io/amazing-api/events.json');
     const data = await respuesta.json();
     return data.events;
   } catch (error) {
@@ -8,10 +8,10 @@ const obtenerData = async () => {
   }
 };
 
-const pintarTarjetas = async () => {
+export const pintarTarjetas = async () => {
   const data = await obtenerData();
-  const cardContainer = document.getElementById('cardm');
-  cardContainer.innerHTML = '';
+  const cardContainerMain = document.getElementById('cardm');
+  
 
   data.forEach((event) => {
     const card = document.createElement('div');
@@ -39,7 +39,7 @@ const pintarTarjetas = async () => {
     card.appendChild(cardPrice);
     card.appendChild(cardDetails);
 
-    cardContainer.appendChild(card);
+    cardContainerMain.appendChild(card);
   });
 };
 
@@ -47,13 +47,57 @@ pintarTarjetas();
 
 const pintarTarjetasCheckbox = async () => {
   const data = await obtenerData();
-  const cardContainer = document.getElementById('cardh');
-  cardContainer.innerHTML = '';
+  const cardContainerMain = document.getElementById('cardh');
+  cardContainerMain.innerHTML = '';
 
   const checkboxContainer = document.getElementById('contenedorCheckboxes');
   checkboxContainer.innerHTML = '';
 
   const categorias = [...new Set(data.map(event => event.category))];
+
+  const input = document.getElementById('textoIndex');
+
+  input.addEventListener('keydown'||'click', () => {
+    const valorInput = input.value.toLowerCase();
+    const tarjetasFiltradas = data.filter(event => event.name.toLowerCase().includes(valorInput));
+  
+    cardContainerMain.innerHTML = '';
+  
+    if (tarjetasFiltradas.length > 0) {
+      const cardMainContainer = document.getElementById('cardm');
+          cardMainContainer.innerHTML = '';
+      tarjetasFiltradas.forEach(event => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+  
+        const cardImage = document.createElement('img');
+        cardImage.src = event.image;
+  
+        const cardTitle = document.createElement('h2');
+        cardTitle.textContent = event.name;
+  
+        const cardDescription = document.createElement('p');
+        cardDescription.textContent = event.description;
+  
+        const cardPrice = document.createElement('p');
+        cardPrice.textContent = "Costo:$" + event.price;
+  
+        const cardDetails = document.createElement('a');
+        cardDetails.textContent = "Detalles";
+        cardDetails.href = `./Details.html?id=${event._id}`;
+  
+        card.appendChild(cardTitle);
+        card.appendChild(cardImage);
+        card.appendChild(cardDescription);
+        card.appendChild(cardPrice);
+        card.appendChild(cardDetails);
+  
+        cardContainerMain.appendChild(card);
+      });
+    } else {
+      alert('La información proporcionada no coincide, favor de verificar');
+    }
+  });
 
   categorias.forEach(categoria => {
     const checkbox = document.createElement('input');
@@ -66,7 +110,7 @@ const pintarTarjetasCheckbox = async () => {
     label.htmlFor = categoria;
 
     checkbox.addEventListener('change', () => {
-        cardContainer.innerHTML = '';
+        cardContainerMain.innerHTML = '';
 
     if (checkbox.checked) {
         const cardMainContainer = document.getElementById('cardm');
@@ -99,7 +143,7 @@ const pintarTarjetasCheckbox = async () => {
         card.appendChild(cardPrice);
         card.appendChild(cardDetails);
 
-      cardContainer.appendChild(card);
+      cardContainerMain.appendChild(card);
     });
 }
 });
@@ -113,50 +157,329 @@ checkboxContainer.appendChild(document.createElement('br'));
 
 pintarTarjetasCheckbox();
 
-const input = document.getElementById('textoIndex');
-const boton = document.getElementById('botonIndex');
-const cardContainer = document.getElementById('cardh');
-const data = await obtenerData();
+// Aqui comienzan las tarjetas pasadas
 
-input.addEventListener('click', () => {
-  const valorInput = input.value.toLowerCase();
-  const tarjetasFiltradas = data.filter(event => event.name.toLowerCase().includes(valorInput));
+export const crearTarjetasPasadas = async () => {
+  const data = await obtenerData();
+  const cardContainerP = document.getElementById('cardp');
+  
+  cardContainerP.innerHTML = '';
 
-  cardContainer.innerHTML = '';
+  const fechaActual = new Date("2023-03-10");
+  const eventosPasados = data.filter((event) => {
+    const fechaEvento = new Date(event.date);
+    return fechaEvento < fechaActual;
+  });
 
-  if (tarjetasFiltradas.length > 0) {
-    const cardMainContainer = document.getElementById('cardm');
-        cardMainContainer.innerHTML = '';
-    tarjetasFiltradas.forEach(event => {
+  eventosPasados.forEach((event) => {
+    const card = document.createElement('div');
+    card.classList.add('card');
+
+    const cardImage = document.createElement('img');
+    cardImage.src = event.image;
+
+    const cardTitle = document.createElement('h2');
+    cardTitle.textContent = event.name;
+
+    const cardDescription = document.createElement('p');
+    cardDescription.textContent = event.description;
+
+    const cardPrice = document.createElement('p');
+    cardPrice.textContent = "Costo:$" + event.price;
+
+    const cardDetails = document.createElement('a');
+    cardDetails.textContent = "Detalles";
+    cardDetails.href = `./Details.html?id=${event._id}`
+
+    card.appendChild(cardTitle);
+    card.appendChild(cardImage);
+    card.appendChild(cardDescription);
+    card.appendChild(cardPrice);
+    card.appendChild(cardDetails);
+
+    cardContainerP.appendChild(card);
+  });
+
+};
+
+crearTarjetasPasadas();
+
+export const filtrarTarjetasPasadas = async () => {
+  const data = await obtenerData();
+  const  cardContainerP= document.getElementById('cardp');
+  cardContainerP.innerHTML = '';
+
+  const fechaActual = new Date("2023-03-10");
+  const eventosPasados = data.filter((event) => {
+    const fechaEvento = new Date(event.date);
+    return fechaEvento < fechaActual;
+  });
+
+  // Filtro del input
+  const inputFiltro = document.getElementById('textoPast');
+  inputFiltro.addEventListener('keyup', (e) => {
+    const filtro = e.target.value.toLowerCase();
+    const eventosFiltrados = eventosPasados.filter((event) => {
+      return event.name.toLowerCase().includes(filtro) || event.description.toLowerCase().includes(filtro);
+    });
+    renderizarTarjetas(eventosFiltrados);
+  });
+
+  const renderizarTarjetas = (eventos) => {
+    cardContainerP.innerHTML = '';
+    eventos.forEach((event) => {
       const card = document.createElement('div');
       card.classList.add('card');
-
+  
       const cardImage = document.createElement('img');
       cardImage.src = event.image;
-
+  
       const cardTitle = document.createElement('h2');
       cardTitle.textContent = event.name;
-
+  
       const cardDescription = document.createElement('p');
       cardDescription.textContent = event.description;
-
+  
       const cardPrice = document.createElement('p');
       cardPrice.textContent = "Costo:$" + event.price;
-
+  
       const cardDetails = document.createElement('a');
       cardDetails.textContent = "Detalles";
-      cardDetails.href = `./Details.html?id=${event._id}`;
-
+      cardDetails.href = `./Details.html?id=${event._id}`
+  
       card.appendChild(cardTitle);
       card.appendChild(cardImage);
       card.appendChild(cardDescription);
       card.appendChild(cardPrice);
       card.appendChild(cardDetails);
 
-      cardContainer.appendChild(card);
+      cardContainerP.appendChild(card);
+    }) 
+  };
+
+  renderizarTarjetas(eventosPasados);
+
+  // Filtro de checkbox variables
+
+const dataFilterPast = await obtenerData();
+const fechaPastActual = new Date("2023-03-10");
+const eventosPasadosFilter = dataFilterPast.filter((event) => {
+  const fechaEvento = new Date(event.date);
+  return fechaEvento < fechaPastActual;
+});
+// Filtro de checkbox lo que se va a poner
+const renderizarTarjetasPast = (eventos) => {
+  cardContainerP.innerHTML = '';
+  eventos.forEach((event) => {
+    const card = document.createElement('div');
+      card.classList.add('card');
+  
+      const cardImage = document.createElement('img');
+      cardImage.src = event.image;
+  
+      const cardTitle = document.createElement('h2');
+      cardTitle.textContent = event.name;
+  
+      const cardDescription = document.createElement('p');
+      cardDescription.textContent = event.description;
+  
+      const cardPrice = document.createElement('p');
+      cardPrice.textContent = "Costo:$" + event.price;
+  
+      const cardDetails = document.createElement('a');
+      cardDetails.textContent = "Detalles";
+      cardDetails.href = `./Details.html?id=${event._id}`
+  
+      card.appendChild(cardTitle);
+      card.appendChild(cardImage);
+      card.appendChild(cardDescription);
+      card.appendChild(cardPrice);
+      card.appendChild(cardDetails);
+
+    cardContainerP.appendChild(card);
+  });
+};
+
+// Filtro de checkbox valores a tomar en cuanta
+
+const checkboxFiltro = document.getElementById('contenedorCheckboxesP');
+checkboxFiltro.innerHTML = '';
+
+const categorysPast = [...new Set(eventosPasadosFilter.map(event => event.category))];
+
+categorysPast.forEach(categoria => {
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.id = categoria;
+  checkbox.name = 'categoria';
+
+  const label = document.createElement('label');
+  label.textContent = categoria;
+  label.htmlFor = categoria;
+
+  checkboxFiltro.appendChild(checkbox);
+  checkboxFiltro.appendChild(label);
+  checkboxFiltro.appendChild(document.createElement('br'));
+
+  checkbox.addEventListener('change', () => {
+    const categoriasSeleccionadas = [];
+    const checkboxes = document.querySelectorAll('input[name="categoria"]');
+    checkboxes.forEach(checkbox => {
+      if (checkbox.checked) {
+        categoriasSeleccionadas.push(checkbox.id);
+      }
     });
-  } else {
-    alert('La información proporcionada no coincide, favor de verificar');
-  }
+
+    const eventosFiltrados = eventosPasados.filter(event => {
+      return categoriasSeleccionadas.includes(event.category);
+    });
+
+    renderizarTarjetasPast(eventosFiltrados);
+  });
 });
 
+} 
+
+filtrarTarjetasPasadas();
+
+
+
+// Aqui comienzan eventos futuros
+
+export const filtrarTarjetasFuturas = async () => {
+  const data = await obtenerData();
+  const cardContainerUp = document.getElementById('cardu');
+  cardContainerUp.innerHTML = '';
+  const eventosFuturos = data.filter((event) => {
+    const fechaEvento = new Date(event.date);
+    const fechaActual = new Date("2023-03-10");
+    return fechaEvento > fechaActual;
+  });console.log(data);
+  
+   // Filtro del input
+   const inputFiltro = document.getElementById('textoFut');
+   inputFiltro.addEventListener('keyup', (e) => {
+     const filtro = e.target.value.toLowerCase();
+     const eventosFiltrados = eventosFuturos.filter((event) => {
+       return event.name.toLowerCase().includes(filtro) || event.description.toLowerCase().includes(filtro);
+     });
+     renderizarTarjetas(eventosFiltrados);
+   });
+ 
+   const renderizarTarjetas = (eventos) => {
+     cardContainerUp.innerHTML = '';
+     eventos.forEach((event) => {
+      const card = document.createElement('div');
+      card.classList.add('card');
+  
+      const cardImage = document.createElement('img');
+      cardImage.src = event.image;
+  
+      const cardTitle = document.createElement('h2');
+      cardTitle.textContent = event.name;
+  
+      const cardDescription = document.createElement('p');
+      cardDescription.textContent = event.description;
+  
+      const cardPrice = document.createElement('p');
+      cardPrice.textContent = "Costo:$" + event.price;
+  
+      const cardDetails = document.createElement('a');
+      cardDetails.textContent = "Detalles";
+      cardDetails.href = `./Details.html?id=${event._id}`
+  
+      card.appendChild(cardTitle);
+      card.appendChild(cardImage);
+      card.appendChild(cardDescription);
+      card.appendChild(cardPrice);
+      card.appendChild(cardDetails);
+ 
+       cardContainerUp.appendChild(card);
+     });
+   };
+ 
+   renderizarTarjetas(eventosFuturos);
+ };
+
+filtrarTarjetasFuturas();
+
+// Filtro de checkbox variables
+const cardContainerUp = document.getElementById('cardu');
+cardContainerUp.innerHTML = '';
+const data = await obtenerData();
+const fechaActual = new Date("2023-03-10");
+const eventosFuturos = data.filter((event) => {
+  const fechaEvento = new Date(event.date);
+  return fechaEvento > fechaActual;
+});
+// Filtro de checkbox lo que se va a poner
+const renderizarTarjetas = (eventos) => {
+  cardContainerUp.innerHTML = '';
+  eventos.forEach((event) => {
+    const card = document.createElement('div');
+      card.classList.add('card');
+  
+      const cardImage = document.createElement('img');
+      cardImage.src = event.image;
+  
+      const cardTitle = document.createElement('h2');
+      cardTitle.textContent = event.name;
+  
+      const cardDescription = document.createElement('p');
+      cardDescription.textContent = event.description;
+  
+      const cardPrice = document.createElement('p');
+      cardPrice.textContent = "Costo:$" + event.price;
+  
+      const cardDetails = document.createElement('a');
+      cardDetails.textContent = "Detalles";
+      cardDetails.href = `./Details.html?id=${event._id}`
+  
+      card.appendChild(cardTitle);
+      card.appendChild(cardImage);
+      card.appendChild(cardDescription);
+      card.appendChild(cardPrice);
+      card.appendChild(cardDetails);
+
+    cardContainerUp.appendChild(card);
+  });
+};
+
+// Filtro de checkbox valores a tomar en cuanta
+
+const checkboxFiltroUp = document.getElementById('contenedorCheckboxesF');
+checkboxFiltroUp.innerHTML = '';
+
+const categorias = [...new Set(eventosFuturos.map(event => event.category))];
+categorias.forEach(categoria => {
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.id = categoria;
+  checkbox.name = 'categoria';
+
+  const label = document.createElement('label');
+  label.textContent = categoria;
+  label.htmlFor = categoria;
+
+  checkboxFiltroUp.appendChild(checkbox);
+  checkboxFiltroUp.appendChild(label);
+  checkboxFiltroUp.appendChild(document.createElement('br'));
+
+  checkbox.addEventListener('change', () => {
+    const categoriasSeleccionadas = [];
+    const checkboxes = document.querySelectorAll('input[name="categoria"]');
+    checkboxes.forEach(checkbox => {
+      if (checkbox.checked) {
+        categoriasSeleccionadas.push(checkbox.id);
+      }
+    });
+
+    const eventosFiltrados = eventosFuturos.filter(event => {
+      return categoriasSeleccionadas.includes(event.category);
+    });
+
+    renderizarTarjetas(eventosFiltrados);
+  });
+});
+
+// Esta rescatable
