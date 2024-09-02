@@ -111,7 +111,6 @@ const obtenerData = async () => {
      const fechaActual = new Date("2023-03-10");
      const eventosFiltrados = data.filter((evento) => {
        const fechaEvento = new Date(evento.date);
-       const resultado = [...new Set(data.map((evento) => evento.category))];
        const mostrarResultado = async () => {
          try {
            const data = await obtenerData();
@@ -194,10 +193,272 @@ const obtenerData = async () => {
        
        return fechaEvento < fechaActual;
      });
-     console.log(eventosFiltrados);
-   } catch (error) {
+     const calculateGananciasPorCategoria = (eventosFiltrados) => {
+       const gananciasPorCategoria = {};
+     
+       eventosFiltrados.forEach((event) => {
+         const categoria = event.category;
+         const revenue = event.assistance * event.price;
+     
+         if (gananciasPorCategoria[categoria]) {
+           gananciasPorCategoria[categoria].revenue += revenue;
+         } else {
+           gananciasPorCategoria[categoria] = { revenue };
+         }
+       });
+     
+       return gananciasPorCategoria;
+     };
+     
+     const calculatePorcentajeAsistenciaPorCategoria = (eventosFiltrados) => {
+       const porcentajeAsistenciaPorCategoria = {};
+     
+       eventosFiltrados.forEach((event) => {
+         const categoria = event.category;
+         const capacidad = event.capacity;
+         const asistencia = event.assistance;
+         const porcentajeAsistencia = (asistencia / capacidad) * 100;
+     
+         if (porcentajeAsistenciaPorCategoria[categoria]) {
+           porcentajeAsistenciaPorCategoria[categoria].push(porcentajeAsistencia);
+         } else {
+           porcentajeAsistenciaPorCategoria[categoria] = [porcentajeAsistencia];
+         }
+       });
+     
+       // Calcula el promedio del porcentaje de asistencia por categoría
+       Object.keys(porcentajeAsistenciaPorCategoria).forEach((categoria) => {
+         const porcentajes = porcentajeAsistenciaPorCategoria[categoria];
+         const promedio = porcentajes.reduce((a, b) => a + b, 0) / porcentajes.length;
+         porcentajeAsistenciaPorCategoria[categoria] = promedio.toFixed(2);
+       });
+     
+       return porcentajeAsistenciaPorCategoria;
+     };
+
+     const porcentajeAsistenciaPorCategoria = calculatePorcentajeAsistenciaPorCategoria(eventosFiltrados);
+
+     const primerPorcentaje = porcentajeAsistenciaPorCategoria["Food"];
+     const segundoPorcentaje = porcentajeAsistenciaPorCategoria["Museum"];
+     const terceroPorcentaje = porcentajeAsistenciaPorCategoria["Concert"];
+     const cuartoPorcentaje = porcentajeAsistenciaPorCategoria["Race"];
+     const quintoPorcentaje = porcentajeAsistenciaPorCategoria["Books"];
+     const sextoPorcentaje = porcentajeAsistenciaPorCategoria["Cinema"];
+     const septimoPorcentaje = porcentajeAsistenciaPorCategoria["Party"];
+     const tdPorcentaje1 = document.getElementById('porcentaje1');
+     const tdPorcentaje2 = document.getElementById('porcentaje2');
+     const tdPorcentaje3 = document.getElementById('porcentaje3');
+     const tdPorcentaje4 = document.getElementById('porcentaje4');
+     const tdPorcentaje5 = document.getElementById('porcentaje5');
+     const tdPorcentaje6 = document.getElementById('porcentaje6');
+     const tdPorcentaje7 = document.getElementById('porcentaje7');
+     tdPorcentaje1.textContent = primerPorcentaje;
+     tdPorcentaje2.textContent = segundoPorcentaje;
+     tdPorcentaje3.textContent = terceroPorcentaje;
+     tdPorcentaje4.textContent = cuartoPorcentaje;
+     tdPorcentaje5.textContent = quintoPorcentaje;
+     tdPorcentaje6.textContent = sextoPorcentaje;
+     tdPorcentaje7.textContent = septimoPorcentaje;
+     
+     const gananciaPorCategoria = calculateGananciasPorCategoria(eventosFiltrados);
+     
+        const resultado = gananciaPorCategoria;
+        const primerCategoria = resultado["Food"].revenue;
+        const segundaCategoria= resultado["Museum"].revenue;
+        const terceraCategoria= resultado["Concert"].revenue;
+        const cuartaCategoria= resultado["Race"].revenue;
+        const quintaCategoria= resultado["Books"].revenue;
+        const sextaCategoria= resultado["Cinema"].revenue;
+        const septimaCategoria= resultado["Party"].revenue;
+        const tdCategoria1 = document.getElementById('revenue1');
+        const tdCategoria2 = document.getElementById('revenue2');
+        const tdCategoria3 = document.getElementById('revenue3');
+        const tdCategoria4 = document.getElementById('revenue4');
+        const tdCategoria5 = document.getElementById('revenue5');
+        const tdCategoria6 = document.getElementById('revenue6');
+        const tdCategoria7 = document.getElementById('revenue7');
+        tdCategoria1.textContent = primerCategoria;
+        tdCategoria2.textContent = segundaCategoria;
+        tdCategoria3.textContent = terceraCategoria;
+        tdCategoria4.textContent = cuartaCategoria;
+        tdCategoria5.textContent = quintaCategoria;
+        tdCategoria6.textContent = sextaCategoria;
+        tdCategoria7.textContent = septimaCategoria;
+      } catch (error) {
      console.error(error);
    }
- };
- 
+  };
 eventosPasados();
+
+
+// Calculos de upcoming events
+
+const eventosFuturos = async () => {
+  try {
+    const data = await obtenerData();
+    const fechaActual = new Date("2023-03-10");
+    const eventosFiltrados = data.filter((evento) => {
+      const fechaEvento = new Date(evento.date);
+      const mostrarResultado = async () => {
+        try {
+          const data = await obtenerData();
+          const resultado = [...new Set(data.map((evento) => evento.category))];
+          const primerCategoria = resultado[0];
+          const tdCategoria1 = document.getElementById('categoriaF1');
+          tdCategoria1.textContent = primerCategoria;
+        } catch (error) {
+        }
+      };
+
+      const mostrarResultado1 = async () => {
+       try {
+         const data = await obtenerData();
+         const resultado = [...new Set(data.map((evento) => evento.category))];
+         const primerCategoria = resultado[1];
+         const tdCategoria1 = document.getElementById('categoriaF2');
+         tdCategoria1.textContent = primerCategoria;
+       } catch (error) {
+       }
+     };
+     const mostrarResultado2 = async () => {
+       try {
+         const data = await obtenerData();
+         const resultado = [...new Set(data.map((evento) => evento.category))];
+         const primerCategoria = resultado[2];
+         const tdCategoria1 = document.getElementById('categoriaF3');
+         tdCategoria1.textContent = primerCategoria;
+       } catch (error) {
+       }
+     };
+     const mostrarResultado3 = async () => {
+       try {
+         const data = await obtenerData();
+         const resultado = [...new Set(data.map((evento) => evento.category))];
+         const primerCategoria = resultado[3];
+         const tdCategoria1 = document.getElementById('categoriaF4');
+         tdCategoria1.textContent = primerCategoria;
+       } catch (error) {
+       }
+     };
+     const mostrarResultado4 = async () => {
+       try {
+         const data = await obtenerData();
+         const resultado = [...new Set(data.map((evento) => evento.category))];
+         const primerCategoria = resultado[4];
+         const tdCategoria1 = document.getElementById('categoriaF5');
+         tdCategoria1.textContent = primerCategoria;
+       } catch (error) {
+       }
+     };
+     const mostrarResultado6 = async () => {
+       try {
+         const data = await obtenerData();
+         const resultado = [...new Set(data.map((evento) => evento.category))];
+         const primerCategoria = resultado[6];
+         const tdCategoria1 = document.getElementById('categoriaF7');
+         tdCategoria1.textContent = primerCategoria;
+       } catch (error) {
+       }
+     };
+      
+      mostrarResultado();
+      mostrarResultado1();
+      mostrarResultado2();
+      mostrarResultado3();
+      mostrarResultado4();
+      mostrarResultado6();
+      
+      return fechaEvento > fechaActual;
+    });
+    
+    const calculateGananciasPorCategoria = (eventosFiltrados) => {
+      const gananciasPorCategoria = {};
+    
+      eventosFiltrados.forEach((event) => {
+        const categoria = event.category;
+        const revenue = event.estimate * event.price;
+    
+        if (gananciasPorCategoria[categoria]) {
+          gananciasPorCategoria[categoria].revenue += revenue;
+        } else {
+          gananciasPorCategoria[categoria] = { revenue };
+        }
+      });
+    
+      return gananciasPorCategoria;
+    };
+    
+    const calculatePorcentajeAsistenciaPorCategoria = (eventosFiltrados) => {
+      const porcentajeAsistenciaPorCategoria = {};
+    
+      eventosFiltrados.forEach((event) => {
+        const categoria = event.category;
+        const capacidad = event.capacity;
+        const asistencia = event.estimate;
+        const porcentajeAsistencia = (asistencia / capacidad) * 100;
+    
+        if (porcentajeAsistenciaPorCategoria[categoria]) {
+          porcentajeAsistenciaPorCategoria[categoria].push(porcentajeAsistencia);
+        } else {
+          porcentajeAsistenciaPorCategoria[categoria] = [porcentajeAsistencia];
+        }
+      });
+    
+      // Calcula el promedio del porcentaje de asistencia por categoría
+      Object.keys(porcentajeAsistenciaPorCategoria).forEach((categoria) => {
+        const porcentajes = porcentajeAsistenciaPorCategoria[categoria];
+        const promedio = porcentajes.reduce((a, b) => a + b, 0) / porcentajes.length;
+        porcentajeAsistenciaPorCategoria[categoria] = promedio.toFixed(2);
+      });
+    
+      return porcentajeAsistenciaPorCategoria;
+    };
+
+    const porcentajeAsistenciaPorCategoria = calculatePorcentajeAsistenciaPorCategoria(eventosFiltrados);
+
+    const primerPorcentaje = porcentajeAsistenciaPorCategoria["Food"];
+    const segundoPorcentaje = porcentajeAsistenciaPorCategoria["Museum"];
+    const terceroPorcentaje = porcentajeAsistenciaPorCategoria["Concert"];
+    const cuartoPorcentaje = porcentajeAsistenciaPorCategoria["Race"];
+    const quintoPorcentaje = porcentajeAsistenciaPorCategoria["Books"];
+    const septimoPorcentaje = porcentajeAsistenciaPorCategoria["Party"];
+    const tdPorcentaje1 = document.getElementById('porcentajeF1');
+    const tdPorcentaje2 = document.getElementById('porcentajeF2');
+    const tdPorcentaje3 = document.getElementById('porcentajeF3');
+    const tdPorcentaje4 = document.getElementById('porcentajeF4');
+    const tdPorcentaje5 = document.getElementById('porcentajeF5');
+    const tdPorcentaje6 = document.getElementById('porcentajeF6');
+    const tdPorcentaje7 = document.getElementById('porcentajeF7');
+    tdPorcentaje1.textContent = primerPorcentaje;
+    tdPorcentaje2.textContent = segundoPorcentaje;
+    tdPorcentaje3.textContent = terceroPorcentaje;
+    tdPorcentaje4.textContent = cuartoPorcentaje;
+    tdPorcentaje5.textContent = quintoPorcentaje;
+    tdPorcentaje7.textContent = septimoPorcentaje;
+    
+    const gananciaPorCategoria = calculateGananciasPorCategoria(eventosFiltrados);
+    
+       const resultado = gananciaPorCategoria;
+       const primerCategoria = resultado["Food"].revenue;
+       const segundaCategoria= resultado["Museum"].revenue;
+       const terceraCategoria= resultado["Concert"].revenue;
+       const cuartaCategoria= resultado["Race"].revenue;
+       const quintaCategoria= resultado["Books"].revenue;
+       const septimaCategoria= resultado["Party"].revenue;
+       const tdCategoria1 = document.getElementById('revenueF1');
+       const tdCategoria2 = document.getElementById('revenueF2');
+       const tdCategoria3 = document.getElementById('revenueF3');
+       const tdCategoria4 = document.getElementById('revenueF4');
+       const tdCategoria5 = document.getElementById('revenueF5');
+       const tdCategoria7 = document.getElementById('revenueF7');
+       tdCategoria1.textContent = primerCategoria;
+       tdCategoria2.textContent = segundaCategoria;
+       tdCategoria3.textContent = terceraCategoria;
+       tdCategoria4.textContent = cuartaCategoria;
+       tdCategoria5.textContent = quintaCategoria;
+       tdCategoria7.textContent = septimaCategoria;
+     } catch (error) {
+    console.error(error);
+  }
+ };
+eventosFuturos();
