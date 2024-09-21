@@ -19,3 +19,7 @@ a {
   text-decoration: none;
   background-color: rgba(13, 110, 253, 1);
 }
+
+element.style {
+  display: flex;
+}

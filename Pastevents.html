@@ -49,7 +49,7 @@
     <div class="d-flex justify-content-center bg-warning">
       <h1>Past Events</h1>
     </div>
-    <div id="carouselExampleCaptions" class="carousel slide">
+    < id="carouselExampleCaptions" class="carousel slide">
       <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
           aria-current="true" aria-label="Slide 1"></button>
@@ -90,25 +90,23 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
-    </div>
     <div>
       <p style="font-weight: 700;">What activity are you interested in:</p>
     </div>
 
-    <div class="radios d-sm-flex justify-content-between">
-      
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <div id="cardp" class="row g-3"></div>
+        </div>
+        <div class="col-md-4">
+          <div class="mb-3">
+            <input id="textoPast" class="form-control" type="search" placeholder="Search" aria-label="Search">
+          </div>
+          <div id="contenedorCheckboxesP"></div>
+        </div>
+      </div>
     </div>
-    <div class="d-flex justify-content-end">
-      <form class="d-flex p-4" role="search">
-        <input id="textoPast" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      </form> <button id="botonPast" class="btn btn-outline-success" type="submit">Search</button></div>
-      <div id="contenedorCheckboxesP" class="checks d-md-flex"></div>
-      
-    </div>
-
-    <div id="cardp" class="d-flex flex-wrap gap-3"></div>
-    
-
   </main>
   <footer class="bg-primary p-4"> 
     <div class="d-flex justify-content-between">
